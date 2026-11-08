@@ -1,0 +1,31 @@
+<Solution>
+  <Folder Name="/client/">
+    <Project Path="client/Game.ConsoleClient/Game.ConsoleClient.csproj" Id="d6f1a3da-3def-451f-bc6b-cf134f189411" />
+  </Folder>
+  <Folder Name="/docs/">
+    <File Path="docs/contexts_registry.md" />
+    <File Path="README.MD" />
+  </Folder>
+  <Folder Name="/docs/internal_spec/" />
+  <Folder Name="/docs/internal_spec/Battle/">
+    <File Path="docs/internal_spec/Battle/business_logic.md" />
+  </Folder>
+  <Folder Name="/docs/internal_spec/Identity/">
+    <File Path="docs/internal_spec/Identity/business_logic.md" />
+  </Folder>
+  <Folder Name="/docs/internal_spec/Progress/">
+    <File Path="docs/internal_spec/Progress/business_logic.md" />
+  </Folder>
+  <Folder Name="/docs/internal_spec/SharedKernel/">
+    <File Path="docs/internal_spec/SharedKernel/business_logic.md" />
+  </Folder>
+  <Folder Name="/docs/policy/">
+    <File Path="docs/policy/project_policy.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Game.Api/Game.Api.csproj" Id="f55fdc1e-c045-423f-b017-418d65f606e6" />
+    <Project Path="src/Game.Application/Game.Application.csproj" />
+    <Project Path="src/Game.Domain/Game.Domain.csproj" />
+    <Project Path="src/Game.Infrastructure/Game.Infrastructure.csproj" />
+  </Folder>
+</Solution>
