@@ -3,6 +3,7 @@
     <Project Path="client/Game.ConsoleClient/Game.ConsoleClient.csproj" Id="d6f1a3da-3def-451f-bc6b-cf134f189411" />
   </Folder>
   <Folder Name="/docs/">
+    <File Path="docs/changelog.md" />
     <File Path="docs/contexts_registry.md" />
     <File Path="README.MD" />
   </Folder>

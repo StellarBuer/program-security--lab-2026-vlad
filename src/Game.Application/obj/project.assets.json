@@ -1,11 +1,30 @@
 {
   "version": 4,
   "targets": {
-    "net10.0": {}
+    "net10.0": {
+      "Game.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/Game.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Game.Domain.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Game.Domain/1.0.0": {
+      "type": "project",
+      "path": "../Game.Domain/Game.Domain.csproj",
+      "msbuildProject": "../Game.Domain/Game.Domain.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net10.0": []
+    "net10.0": [
+      "Game.Domain >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\otkvl\\.nuget\\packages\\": {},
@@ -39,7 +58,11 @@
         "net10.0": {
           "framework": "net10.0",
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\ХНУ\\4 КУРС 7 семестр\\Безпека ПЗ\\program-security--lab-2026-vlad\\src\\Game.Domain\\Game.Domain.csproj": {
+              "projectPath": "D:\\ХНУ\\4 КУРС 7 семестр\\Безпека ПЗ\\program-security--lab-2026-vlad\\src\\Game.Domain\\Game.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

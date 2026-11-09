@@ -1,0 +1,16 @@
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\bin\Debug\net10.0\Game.Application.deps.json
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\bin\Debug\net10.0\Game.Application.dll
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\bin\Debug\net10.0\Game.Application.pdb
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\bin\Debug\net10.0\Game.Domain.dll
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\bin\Debug\net10.0\Game.Domain.pdb
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\obj\Debug\net10.0\Game.Application.csproj.AssemblyReference.cache
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\obj\Debug\net10.0\Game.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\obj\Debug\net10.0\Game.Application.AssemblyInfoInputs.cache
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\obj\Debug\net10.0\Game.Application.AssemblyInfo.cs
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\obj\Debug\net10.0\Game.Application.csproj.CoreCompileInputs.cache
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\obj\Debug\net10.0\Game.Application.sourcelink.json
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\obj\Debug\net10.0\Game.App.0A0D3DF6.Up2Date
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\obj\Debug\net10.0\Game.Application.dll
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\obj\Debug\net10.0\refint\Game.Application.dll
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\obj\Debug\net10.0\Game.Application.pdb
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Application\obj\Debug\net10.0\ref\Game.Application.dll

@@ -1,0 +1,13 @@
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Domain\bin\Debug\net10.0\Game.Domain.deps.json
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Domain\bin\Debug\net10.0\Game.Domain.dll
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Domain\bin\Debug\net10.0\Game.Domain.pdb
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Domain\obj\Debug\net10.0\Game.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Domain\obj\Debug\net10.0\Game.Domain.AssemblyInfoInputs.cache
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Domain\obj\Debug\net10.0\Game.Domain.AssemblyInfo.cs
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Domain\obj\Debug\net10.0\Game.Domain.csproj.CoreCompileInputs.cache
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Domain\obj\Debug\net10.0\Game.Domain.sourcelink.json
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Domain\obj\Debug\net10.0\Game.Domain.dll
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Domain\obj\Debug\net10.0\refint\Game.Domain.dll
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Domain\obj\Debug\net10.0\Game.Domain.pdb
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Domain\obj\Debug\net10.0\ref\Game.Domain.dll
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\src\Game.Domain\obj\Debug\net10.0\Game.Dom.18CAA4BB.Up2Date
