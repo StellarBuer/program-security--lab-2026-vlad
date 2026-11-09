@@ -20,7 +20,10 @@
     <File Path="docs/internal_spec/SharedKernel/business_logic.md" />
   </Folder>
   <Folder Name="/docs/policy/">
+    <File Path="docs/policy/privacy_policy.md" />
     <File Path="docs/policy/project_policy.md" />
+    <File Path="docs/policy/security_policy.md" />
+    <File Path="docs/policy/thread_model.md" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/Game.Api/Game.Api.csproj" Id="f55fdc1e-c045-423f-b017-418d65f606e6" />
