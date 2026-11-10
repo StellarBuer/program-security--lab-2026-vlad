@@ -1,8 +1,9 @@
 {
   "openapi": "3.0.4",
   "info": {
-    "title": "Game.Api",
-    "version": "1.0"
+    "title": "Tactics Game Engine API",
+    "description": "Серверний REST API для тактичної гри з підтримкою JWT-токенів.",
+    "version": "v1"
   },
   "paths": {
     "/api/health": {
@@ -17,7 +18,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringString<>f__AnonymousType0"
+                  "$ref": "#/components/schemas/StringString<>f__AnonymousType1"
                 }
               }
             }
@@ -47,10 +48,60 @@
           }
         }
       }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Game.Api"
+        ],
+        "operationId": "LoginUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": [
+          "Game.Api"
+        ],
+        "operationId": "GetCurrentUserProfile",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "RegisterRequest": {
         "type": "object",
         "properties": {
@@ -65,7 +116,7 @@
         },
         "additionalProperties": false
       },
-      "StringString<>f__AnonymousType0": {
+      "StringString<>f__AnonymousType1": {
         "type": "object",
         "properties": {
           "status": {
@@ -79,8 +130,19 @@
         },
         "additionalProperties": false
       }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Введіть валідний JWT токен у форматі: Bearer {токен}",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
     }
   },
+  "security": [
+    { }
+  ],
   "tags": [
     {
       "name": "Game.Api"

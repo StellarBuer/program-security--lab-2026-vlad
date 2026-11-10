@@ -1,6 +1,9 @@
-﻿namespace Game.Domain.ValueObjects;
+using Game.Domain.Common;
+using Game.Domain.Exceptions;
 
-public class GridPositionVO
+namespace Game.Domain.ValueObjects;
+
+public class GridPositionVO : AValueObject
 {
     public int X { get; }
     public int Y { get; }
@@ -9,10 +12,10 @@ public class GridPositionVO
     {
         // Загальне поле бою складається з двох блоків 5x5 (по ширині X від 0 до 9, по висоті Y від 0 до 4)
         if (x < 0 || x > 9)
-            throw new ArgumentOutOfRangeException(nameof(x), "Координата X має бути в межах від 0 до 9.");
+            throw new DomainValidationException("Координата X має бути в межах від 0 до 9.");
 
         if (y < 0 || y > 4)
-            throw new ArgumentOutOfRangeException(nameof(y), "Координата Y має бути в межах від 0 до 4.");
+            throw new DomainValidationException("Координата Y має бути в межах від 0 до 4.");
 
         X = x;
         Y = y;
@@ -33,12 +36,9 @@ public class GridPositionVO
         }
     }
 
-    // Перевизначення для порівняння об'єктів-значень за полями
-    public override bool Equals(object? obj)
+    protected override IEnumerable<object?> GetEqualityComponents()
     {
-        if (obj is not GridPositionVO other) return false;
-        return X == other.X && Y == other.Y;
+        yield return X;
+        yield return Y;
     }
-
-    public override int GetHashCode() => HashCode.Combine(X, Y);
 }

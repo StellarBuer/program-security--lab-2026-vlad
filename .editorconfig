@@ -1,0 +1,100 @@
+# Root .editorconfig для Tactics Game Engine (.NET Core / DDD)
+root = true
+
+# Загальні налаштування файлів
+[*]
+charset = utf-8
+end_of_line = crlf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Налаштування C# коду
+[*.cs]
+# Розміщення та сортування директив using
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+csharp_using_directive_placement = outside_namespace:suggestion
+
+# Оформлення просторів імен (C# 10+ file-scoped namespaces)
+csharp_style_namespace_declarations = file_scoped:suggestion
+
+# Модифікатори доступу
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
+csharp_prefer_simple_using_statement = true:suggestion
+
+# Використання var
+csharp_style_var_for_built_in_types = false:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = true:suggestion
+
+# Expression-bodied члени
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+csharp_style_expression_bodied_constructors = false:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+
+# Паттерн-матчинг та перевірки на null
+csharp_style_prefer_pattern_matching = true:suggestion
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+
+# Правила аналізаторів якості коду
+dotnet_diagnostic.CA1848.severity = none # LoggerMessage delegates recommendation
+
+# Відступи та дужки
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_space_around_binary_operators = before_and_after
+
+# ========================================================
+# Правила неймінгу відповідно до project_policy.md
+# ========================================================
+
+# Інтерфейси: обов'язковий префікс I
+dotnet_naming_rule.interface_should_be_prefixed_with_i.severity = warning
+dotnet_naming_rule.interface_should_be_prefixed_with_i.symbols = interface_symbols
+dotnet_naming_rule.interface_should_be_prefixed_with_i.style = prefix_i_style
+
+dotnet_naming_symbols.interface_symbols.applicable_kinds = interface
+dotnet_naming_symbols.interface_symbols.applicable_accessibilities = *
+dotnet_naming_style.prefix_i_style.capitalization = pascal_case
+dotnet_naming_style.prefix_i_style.required_prefix = I
+
+# Приватні поля класів: обов'язковий префікс _camelCase
+dotnet_naming_rule.private_fields_should_be_underscore_camel_case.severity = warning
+dotnet_naming_rule.private_fields_should_be_underscore_camel_case.symbols = private_field_symbols
+dotnet_naming_rule.private_fields_should_be_underscore_camel_case.style = underscore_camel_case_style
+
+dotnet_naming_symbols.private_field_symbols.applicable_kinds = field
+dotnet_naming_symbols.private_field_symbols.applicable_accessibilities = private
+dotnet_naming_style.underscore_camel_case_style.capitalization = camel_case
+dotnet_naming_style.underscore_camel_case_style.required_prefix = _
+
+# Типи (класи, структури, енуми): PascalCase
+dotnet_naming_rule.types_should_be_pascal_case.severity = warning
+dotnet_naming_rule.types_should_be_pascal_case.symbols = type_symbols
+dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case_style
+
+dotnet_naming_symbols.type_symbols.applicable_kinds = class, struct, enum
+dotnet_naming_symbols.type_symbols.applicable_accessibilities = *
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+
+# Властивості та методи: PascalCase
+dotnet_naming_rule.properties_and_methods_should_be_pascal_case.severity = warning
+dotnet_naming_rule.properties_and_methods_should_be_pascal_case.symbols = property_and_method_symbols
+dotnet_naming_rule.properties_and_methods_should_be_pascal_case.style = pascal_case_style
+
+dotnet_naming_symbols.property_and_method_symbols.applicable_kinds = property, method
+dotnet_naming_symbols.property_and_method_symbols.applicable_accessibilities = *
+
+# Параметри та локальні змінні: camelCase
+dotnet_naming_rule.parameters_should_be_camel_case.severity = warning
+dotnet_naming_rule.parameters_should_be_camel_case.symbols = parameter_symbols
+dotnet_naming_rule.parameters_should_be_camel_case.style = camel_case_style
+
+dotnet_naming_symbols.parameter_symbols.applicable_kinds = parameter, local
+dotnet_naming_symbols.parameter_symbols.applicable_accessibilities = *
+dotnet_naming_style.camel_case_style.capitalization = camel_case

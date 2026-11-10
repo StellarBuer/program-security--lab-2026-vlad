@@ -33,6 +33,9 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
+              "D:\\ХНУ\\4 КУРС 7 семестр\\Безпека ПЗ\\program-security--lab-2026-vlad\\src\\Game.Application\\Game.Application.csproj": {
+                "projectPath": "D:\\ХНУ\\4 КУРС 7 семестр\\Безпека ПЗ\\program-security--lab-2026-vlad\\src\\Game.Application\\Game.Application.csproj"
+              },
               "D:\\ХНУ\\4 КУРС 7 семестр\\Безпека ПЗ\\program-security--lab-2026-vlad\\src\\Game.Infrastructure\\Game.Infrastructure.csproj": {
                 "projectPath": "D:\\ХНУ\\4 КУРС 7 семестр\\Безпека ПЗ\\program-security--lab-2026-vlad\\src\\Game.Infrastructure\\Game.Infrastructure.csproj"
               }
@@ -56,6 +59,10 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[10.0.14, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[10.0.14, )"
@@ -1249,6 +1256,10 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.2.0, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -1258,6 +1269,10 @@
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[10.0.14, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.19.2, )"
             }
           },
           "imports": [

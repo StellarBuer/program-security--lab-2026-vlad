@@ -1,6 +1,7 @@
-﻿namespace Game.Domain.Entities;
-
 using Game.Domain.Common;
+using Game.Domain.Exceptions;
+
+namespace Game.Domain.Entities;
 
 public class UserAccount : ABaseEntity
 {
@@ -12,10 +13,10 @@ public class UserAccount : ABaseEntity
     public UserAccount(string email, string passwordHash)
     {
         if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("Email не може бути порожнім.", nameof(email));
+            throw new DomainValidationException("Email не може бути порожнім.");
         
         if (string.IsNullOrWhiteSpace(passwordHash))
-            throw new ArgumentException("Хеш пароля не може бути порожнім.", nameof(passwordHash));
+            throw new DomainValidationException("Хеш пароля не може бути порожнім.");
 
         Email = email.Trim().ToLowerInvariant();
         PasswordHash = passwordHash;

@@ -1,0 +1,15 @@
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\bin\Debug\net10.0\Game.ConsoleClient.exe
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\bin\Debug\net10.0\Game.ConsoleClient.deps.json
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\bin\Debug\net10.0\Game.ConsoleClient.runtimeconfig.json
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\bin\Debug\net10.0\Game.ConsoleClient.dll
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\bin\Debug\net10.0\Game.ConsoleClient.pdb
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\obj\Debug\net10.0\Game.ConsoleClient.GeneratedMSBuildEditorConfig.editorconfig
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\obj\Debug\net10.0\Game.ConsoleClient.AssemblyInfoInputs.cache
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\obj\Debug\net10.0\Game.ConsoleClient.AssemblyInfo.cs
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\obj\Debug\net10.0\Game.ConsoleClient.csproj.CoreCompileInputs.cache
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\obj\Debug\net10.0\Game.ConsoleClient.sourcelink.json
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\obj\Debug\net10.0\Game.ConsoleClient.dll
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\obj\Debug\net10.0\refint\Game.ConsoleClient.dll
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\obj\Debug\net10.0\Game.ConsoleClient.pdb
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\obj\Debug\net10.0\Game.ConsoleClient.genruntimeconfig.cache
+D:\ХНУ\4 КУРС 7 семестр\Безпека ПЗ\program-security--lab-2026-vlad\client\Game.ConsoleClient\obj\Debug\net10.0\ref\Game.ConsoleClient.dll
