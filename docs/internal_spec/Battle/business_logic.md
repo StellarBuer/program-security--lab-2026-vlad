@@ -30,6 +30,7 @@
 
 | Domain Policy | Description |
 |---|---|
+| `BattleParticipantDPolicy` | **OBAC (Ownership-Based Access Control):** Валідує, що ініціатор дії (`currentUserId` з JWT) є дійсним учасником цієї сесії (`playerTeamRef` або `enemyTeamRef`), та що зараз черга саме його команди. Запобігає маніпуляціям чужими боями (BOLA/IDOR). |
 | `ValidPlacementDPolicy` | Перевіряє, чи знаходиться обрана координата `GridPositionVO` у дозволеному квадраті 3х3 всередині відповідного блоку 5х5, та чи не зайнята вона іншим бійцем. |
 | `SkillExecutionDPolicy` | Перевіряє, чи боєць живий, чи не перебуває навичка на перезарядці (cooldown) та чи досяжна ціль. |
 

@@ -2,6 +2,41 @@
 
 Усі висвітлені зміни у документації та архітектурі проєкту фіксуються у цьому файлі.
 
+## [2026-11-11] [FEAT] Реалізація гібридної моделі розмежування доступу (RBAC + OBAC)
+- **Доменне ядро (`Game.Domain`):**
+  - Додано перелічення `UserRole` (`Player = 1`, `Admin = 2`) для типізації системних ролей користувачів.
+  - Доменну сутність `UserAccount` розширено полем `Role` та методом зміни ролі `ChangeRole(UserRole newRole)`.
+  - Створено доменний виняток `ForbiddenActionException : AGameEngineException` (контекст `CORE`, код `CORE_FORBIDDEN_ACTION`), що представляє спробу несанкціонованої дії.
+- **Шар застосунку (`Game.Application`):**
+  - Створено інтерфейс порту `ICurrentUserService` для отримання контексту автентифікованого користувача (`UserId`, `Email`, `Role`, `IsInRole`) без зв'язування з HTTP-інфраструктурою.
+  - Розширено інтерфейс `IUserRepository` методом `GetAllAsync`.
+  - Оновлено DTO `UserResponseDto` полем `UserRole Role`.
+  - Оновлено сервіс `AuthService`:
+    - Реєстрація `RegisterAsync` гарантує призначення ролі `UserRole.Player` (заборона самовільного підвищення привілеїв).
+    - `GetProfileAsync`: впроваджено перевірку OBAC (Ownership-Based Access Control) — гравець отримує доступ лише до власного профілю (`UserId == targetUserId`), адміністратори мають глобальний доступ.
+    - `GetAllUsersAdminAsync`: впроваджено системну перевірку RBAC (Role-Based Access Control) на наявність ролі `Admin`.
+- **Шар інфраструктури (`Game.Infrastructure`):**
+  - Реалізовано сервіс `CurrentUserService : ICurrentUserService`, що безпечно вилучає ідентифікатор та клейми ролі з `IHttpContextAccessor`.
+  - `JwtTokenService`: додано клейм ролі `ClaimTypes.Role` до структури JWT-токена.
+  - `UserRepository`: реалізовано вибірку `GetAllAsync` з бази даних.
+  - `GameDbContext`: налаштовано мапінг властивості `Role` до цілочисельного типу через Fluent API.
+  - Створено та успішно застосовано міграцію EF Core `20261111202054_AddUserRole` для додавання стовпця `Role` з дефолтним значенням `1` (`Player`) у таблицю `UserAccounts`.
+- **Презентаційний шар (`Game.Api`):**
+  - Зареєстровано `IHttpContextAccessor` та `ICurrentUserService` у DI.
+  - Налаштовано політику авторизації `AdminOnly` в `AddAuthorization`.
+  - Створено захищений маршрут `GET /api/admin/users`, захищений політикою `AdminOnly` (RBAC).
+  - Оновлено `GET /api/auth/me` з підтримкою перевірки контексту користувача.
+  - `GlobalExceptionHandlingMiddleware`: додано перехоплення `ForbiddenActionException` з поверненням HTTP 403 Forbidden без витоку внутрішніх деталей.
+
+## [2026-11-11] [DOCS] Проектування гібридної моделі розмежування доступу (RBAC + OBAC)
+- **Політика безпеки (`security_policy.md`):**
+  - Додано розділ 4.1 "Access Control Model" з описом дворівневої моделі: системний RBAC (`Player`, `Admin`) та ресурсний OBAC (Ownership-Based Access Control) для ізоляції ігрових об'єктів.
+- **Модель загроз (`thread_model.md`):**
+  - Оновлено аналіз STRIDE: загрозу Elevation of Privilege (EoP) зв'язано з RBAC-політиками ASP.NET Core, а загрозу Tampering/BOLA (IDOR) — з перевірками власності OBAC.
+- **Специфікації модулів (`internal_spec`):**
+  - `Identity`: розширено модель `UserAccount` ролями `UserRole` (`Player`, `Admin`), додано клейм ролі до JWT та політику `RoleAssignmentDPolicy`.
+  - `Battle`: додано доменну політику `BattleParticipantDPolicy` (OBAC) для валідації права на хід у конкретній бойовій сесії.
+
 ## [2026-11-10] [FEAT] Реалізація JWT-автентифікації та захисту API (Identity Module)
 - **Шар застосунку (`Game.Application`):**
   - Створено інтерфейс `ITokenService` для абстракції випуску JWT-токенів.
