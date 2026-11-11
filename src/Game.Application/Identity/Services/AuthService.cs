@@ -7,23 +7,25 @@ using Game.Domain.Exceptions;
 namespace Game.Application.Identity.Services;
 
 /// <summary>
-/// Реалізація сценаріїв автентифікації.
-/// Керує валідацією, доменними інваріантами, хешуванням, перевіркою паролів та видачею токенів.
+/// Реалізація сценаріїв автентифікації та розмежування доступу (RBAC + OBAC).
 /// </summary>
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenService _tokenService;
+    private readonly ICurrentUserService _currentUserService;
 
     public AuthService(
         IUserRepository userRepository,
         IPasswordHasher passwordHasher,
-        ITokenService tokenService)
+        ITokenService tokenService,
+        ICurrentUserService currentUserService)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _tokenService = tokenService;
+        _currentUserService = currentUserService;
     }
 
     public async Task<UserResponseDto> RegisterAsync(RegisterUserAC command, CancellationToken cancellationToken = default)
@@ -44,12 +46,13 @@ public class AuthService : IAuthService
             throw new UserAlreadyExistsException(normalizedEmail);
 
         var passwordHash = _passwordHasher.HashPassword(command.Password);
-        var user = new UserAccount(normalizedEmail, passwordHash);
+        // За замовчуванням призначається роль Player (політика безпеки: заборона самопризначення Admin)
+        var user = new UserAccount(normalizedEmail, passwordHash, UserRole.Player);
 
         await _userRepository.AddAsync(user, cancellationToken);
         await _userRepository.SaveChangesAsync(cancellationToken);
 
-        return new UserResponseDto(user.Id, user.Email, user.CreatedAt);
+        return new UserResponseDto(user.Id, user.Email, user.Role, user.CreatedAt);
     }
 
     public async Task<AuthResultDto> LoginAsync(LoginUserAC command, CancellationToken cancellationToken = default)
@@ -67,17 +70,43 @@ public class AuthService : IAuthService
             throw new InvalidCredentialsException();
 
         var token = _tokenService.GenerateToken(user);
-        var userDto = new UserResponseDto(user.Id, user.Email, user.CreatedAt);
+        var userDto = new UserResponseDto(user.Id, user.Email, user.Role, user.CreatedAt);
 
         return new AuthResultDto(token, userDto);
     }
 
-    public async Task<UserResponseDto> GetProfileAsync(Guid userId, CancellationToken cancellationToken = default)
+    /// <summary>
+    /// Отримання профілю користувача із застосуванням моделі OBAC (Ownership-Based Access Control).
+    /// Гравець має право переглядати лише свій профіль, окрім випадків запиту адміністратором (RBAC).
+    /// </summary>
+    public async Task<UserResponseDto> GetProfileAsync(Guid targetUserId, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.GetByIdAsync(userId, cancellationToken);
-        if (user is null)
-            throw new UserNotFoundException(userId);
+        // 1. Перевірка OBAC: чи поточний користувач є власником запитуваного профілю
+        if (_currentUserService.UserId != targetUserId && !_currentUserService.IsInRole("Admin"))
+        {
+            throw new ForbiddenActionException("Ви не маєте доступу до чужого профілю користувача (порушення моделі OBAC).");
+        }
 
-        return new UserResponseDto(user.Id, user.Email, user.CreatedAt);
+        var user = await _userRepository.GetByIdAsync(targetUserId, cancellationToken);
+        if (user is null)
+            throw new UserNotFoundException(targetUserId);
+
+        return new UserResponseDto(user.Id, user.Email, user.Role, user.CreatedAt);
+    }
+
+    /// <summary>
+    /// Отримання списку всіх користувачів із застосуванням моделі RBAC (Role-Based Access Control).
+    /// Доступно лише користувачам із роллю Admin.
+    /// </summary>
+    public async Task<IReadOnlyList<UserResponseDto>> GetAllUsersAdminAsync(CancellationToken cancellationToken = default)
+    {
+        // Перевірка RBAC: чи володіє користувач адміністративними привілеями
+        if (!_currentUserService.IsInRole("Admin"))
+        {
+            throw new ForbiddenActionException("Ця операція доступна лише адміністраторам системи (порушення моделі RBAC).");
+        }
+
+        var users = await _userRepository.GetAllAsync(cancellationToken);
+        return users.Select(u => new UserResponseDto(u.Id, u.Email, u.Role, u.CreatedAt)).ToList();
     }
 }

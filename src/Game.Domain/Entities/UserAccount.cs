@@ -7,10 +7,11 @@ public class UserAccount : ABaseEntity
 {
     public string Email { get; private set; }
     public string PasswordHash { get; private set; }
+    public UserRole Role { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     // Конструктор для створення нового користувача
-    public UserAccount(string email, string passwordHash)
+    public UserAccount(string email, string passwordHash, UserRole role = UserRole.Player)
     {
         if (string.IsNullOrWhiteSpace(email))
             throw new DomainValidationException("Email не може бути порожнім.");
@@ -20,7 +21,13 @@ public class UserAccount : ABaseEntity
 
         Email = email.Trim().ToLowerInvariant();
         PasswordHash = passwordHash;
+        Role = role;
         CreatedAt = DateTime.UtcNow;
+    }
+
+    public void ChangeRole(UserRole newRole)
+    {
+        Role = newRole;
     }
 
     // EF Core потребує порожнього конструктора для мапінгу з бази даних

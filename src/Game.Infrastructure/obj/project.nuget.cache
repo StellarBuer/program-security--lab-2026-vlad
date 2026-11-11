@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "K0yHh0sFb10=",
+  "dgSpecHash": "Rfz7O7uoXbo=",
   "success": true,
   "projectFilePath": "D:\\ХНУ\\4 КУРС 7 семестр\\Безпека ПЗ\\program-security--lab-2026-vlad\\src\\Game.Infrastructure\\Game.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\otkvl\\.nuget\\packages\\bcrypt.net-next\\4.2.0\\bcrypt.net-next.4.2.0.nupkg.sha512",
     "C:\\Users\\otkvl\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\otkvl\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.3.0\\microsoft.aspnetcore.http.abstractions.2.3.0.nupkg.sha512",
+    "C:\\Users\\otkvl\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.3.0\\microsoft.aspnetcore.http.features.2.3.0.nupkg.sha512",
     "C:\\Users\\otkvl\\.nuget\\packages\\microsoft.bcl.cryptography\\10.0.2\\microsoft.bcl.cryptography.10.0.2.nupkg.sha512",
     "C:\\Users\\otkvl\\.nuget\\packages\\microsoft.build.framework\\18.0.2\\microsoft.build.framework.18.0.2.nupkg.sha512",
     "C:\\Users\\otkvl\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.11.0\\microsoft.codeanalysis.analyzers.3.11.0.nupkg.sha512",

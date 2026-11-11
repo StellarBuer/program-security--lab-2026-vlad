@@ -9,7 +9,7 @@ public interface IUserRepository
 {
     Task<UserAccount?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
     Task<UserAccount?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<UserAccount>> GetAllAsync(CancellationToken cancellationToken = default);
     Task AddAsync(UserAccount user, CancellationToken cancellationToken = default);
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }
-

@@ -23,6 +23,10 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddSingleton<ITokenService, JwtTokenService>();
 
+// Доступ до HttpContext для CurrentUserService (RBAC/OBAC)
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
 // 2. Шар застосунку (Use Cases, Services)
 builder.Services.AddScoped<IAuthService, AuthService>();
 
@@ -46,7 +50,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    // Лише адміністратори мають доступ до адмін-ендпоінтів
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+});
 
 // 4. Документація Swagger з підтримкою Bearer-авторизації
 builder.Services.AddEndpointsApiExplorer();
@@ -133,6 +141,7 @@ app.MapPost("/api/auth/login", async (LoginRequest request, IAuthService authSer
 .WithName("LoginUser");
 
 // Захищений ендпоінт: профіль поточного користувача за його JWT токеном
+// OBAC: AuthService порівнює UserId з токена з запитуваним ресурсом
 app.MapGet("/api/auth/me", async (ClaimsPrincipal claimsUser, IAuthService authService, CancellationToken ct) =>
 {
     var userIdString = claimsUser.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -146,5 +155,14 @@ app.MapGet("/api/auth/me", async (ClaimsPrincipal claimsUser, IAuthService authS
 })
 .RequireAuthorization()
 .WithName("GetCurrentUserProfile");
+
+// Адмін-ендпоінт: список усіх користувачів (лише для ролі Admin)
+app.MapGet("/api/admin/users", async (IAuthService authService, CancellationToken ct) =>
+{
+    var users = await authService.GetAllUsersAdminAsync(ct);
+    return Results.Ok(users);
+})
+.RequireAuthorization("AdminOnly")
+.WithName("GetAllUsersAdmin");
 
 app.Run();

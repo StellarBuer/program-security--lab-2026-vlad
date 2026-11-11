@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Game.Domain.Entities; // підтягуємо доменні сутності
 
 namespace Game.Infrastructure.Persistence;
@@ -22,6 +22,13 @@ public class GameDbContext : DbContext
             entity.HasIndex(e => e.Email).IsUnique(); // унікальна пошта
             entity.Property(e => e.Email).IsRequired();
             entity.Property(e => e.PasswordHash).IsRequired();
+
+            // Роль зберігається як ціле число (int) у БД.
+            // Значення за замовчуванням (Player) встановлюється конструктором UserAccount,
+            // тому HasDefaultValue на рівні EF тут не потрібен.
+            entity.Property(e => e.Role)
+                  .IsRequired()
+                  .HasConversion<int>();
         });
     }
 }

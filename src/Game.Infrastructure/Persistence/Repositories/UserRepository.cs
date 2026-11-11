@@ -28,6 +28,11 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 
+    public async Task<IReadOnlyList<UserAccount>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.UserAccounts.ToListAsync(cancellationToken);
+    }
+
     public async Task AddAsync(UserAccount user, CancellationToken cancellationToken = default)
     {
         await _dbContext.UserAccounts.AddAsync(user, cancellationToken);
@@ -38,4 +43,3 @@ public class UserRepository : IUserRepository
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }
-

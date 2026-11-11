@@ -10,7 +10,7 @@ namespace Game.Infrastructure.Security;
 
 /// <summary>
 /// Сервіс генерації криптографічно підписаних JWT-токенів.
-/// Забезпечує цілісність даних автентифікації та захист від підробки (STRIDE: Spoofing).
+/// Забезпечує цілісність даних автентифікації та передачу ролей (RBAC) у клеймах.
 /// </summary>
 public class JwtTokenService : ITokenService
 {
@@ -37,7 +37,8 @@ public class JwtTokenService : ITokenService
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Role, user.Role.ToString())
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -55,4 +56,3 @@ public class JwtTokenService : ITokenService
         return tokenHandler.WriteToken(token);
     }
 }
-

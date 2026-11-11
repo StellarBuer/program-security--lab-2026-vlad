@@ -10,5 +10,6 @@ public interface IAuthService
 {
     Task<UserResponseDto> RegisterAsync(RegisterUserAC command, CancellationToken cancellationToken = default);
     Task<AuthResultDto> LoginAsync(LoginUserAC command, CancellationToken cancellationToken = default);
-    Task<UserResponseDto> GetProfileAsync(Guid userId, CancellationToken cancellationToken = default);
+    Task<UserResponseDto> GetProfileAsync(Guid targetUserId, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<UserResponseDto>> GetAllUsersAdminAsync(CancellationToken cancellationToken = default);
 }
