@@ -1,9 +1,6 @@
-using System.Security.Claims;
 using System.Text;
-using Game.Api.DTOs;
 using Game.Api.Middleware;
 using Game.Application.Common.Interfaces;
-using Game.Application.Identity.Commands;
 using Game.Application.Identity.Services;
 using Game.Infrastructure.Persistence;
 using Game.Infrastructure.Persistence.Repositories;
@@ -30,7 +27,10 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 // 2. Шар застосунку (Use Cases, Services)
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-// 3. Налаштування JWT-автентифікації
+// 3. Контролери (MVC Web API Architecture)
+builder.Services.AddControllers();
+
+// 4. Налаштування JWT-автентифікації
 var jwtSecret = builder.Configuration["Jwt:Secret"]
     ?? throw new InvalidOperationException("JWT Secret is not configured in appsettings.");
 
@@ -52,11 +52,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization(options =>
 {
-    // Лише адміністратори мають доступ до адмін-ендпоінтів
+    // Політика доступу лише для адміністраторів (RBAC)
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 });
 
-// 4. Документація Swagger з підтримкою Bearer-авторизації
+// 5. Документація Swagger з підтримкою Bearer-авторизації
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -64,7 +64,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Title = "Tactics Game Engine API",
         Version = "v1",
-        Description = "Серверний REST API для тактичної гри з підтримкою JWT-токенів."
+        Description = "Серверний REST API (MVC Controllers) для тактичної гри з підтримкою JWT-токенів та RBAC/OBAC."
     });
 
     var securityScheme = new OpenApiSecurityScheme
@@ -90,7 +90,7 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// 5. Глобальний обробник винятків
+// 6. Глобальний обробник винятків
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
@@ -101,68 +101,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Обов'язковий порядок для обробки JWT
+// Обов'язковий порядок обробки JWT
 app.UseAuthentication();
 app.UseAuthorization();
 
-// ======================== ENDPOINTS ========================
-
-// Діагностичний ендпоінт
-app.MapGet("/api/health", () => new { Status = "Online", Message = "Tactics Game Server is running!" })
-   .WithName("HealthCheck");
-
-// Реєстрація нового користувача
-app.MapPost("/api/auth/register", async (RegisterRequest request, IAuthService authService, CancellationToken ct) =>
-{
-    var command = new RegisterUserAC(request.Email, request.Password);
-    var userDto = await authService.RegisterAsync(command, ct);
-
-    return Results.Ok(new
-    {
-        Message = "Користувач успішно зареєстрований і збережений у базі даних!",
-        User = userDto
-    });
-})
-.WithName("RegisterUser");
-
-// Автентифікація користувача з видачею JWT-токена
-app.MapPost("/api/auth/login", async (LoginRequest request, IAuthService authService, CancellationToken ct) =>
-{
-    var command = new LoginUserAC(request.Email, request.Password);
-    var authResult = await authService.LoginAsync(command, ct);
-
-    return Results.Ok(new
-    {
-        Message = "Автентифікація успішна!",
-        Token = authResult.Token,
-        User = authResult.User
-    });
-})
-.WithName("LoginUser");
-
-// Захищений ендпоінт: профіль поточного користувача за його JWT токеном
-// OBAC: AuthService порівнює UserId з токена з запитуваним ресурсом
-app.MapGet("/api/auth/me", async (ClaimsPrincipal claimsUser, IAuthService authService, CancellationToken ct) =>
-{
-    var userIdString = claimsUser.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
-    {
-        return Results.Unauthorized();
-    }
-
-    var profile = await authService.GetProfileAsync(userId, ct);
-    return Results.Ok(profile);
-})
-.RequireAuthorization()
-.WithName("GetCurrentUserProfile");
-
-// Адмін-ендпоінт: список усіх користувачів (лише для ролі Admin)
-app.MapGet("/api/admin/users", async (IAuthService authService, CancellationToken ct) =>
-{
-    var users = await authService.GetAllUsersAdminAsync(ct);
-    return Results.Ok(users);
-})
-.RequireAuthorization("AdminOnly")
-.WithName("GetAllUsersAdmin");
+// 7. Маршрутизація до MVC Контролерів
+app.MapControllers();
 
 app.Run();

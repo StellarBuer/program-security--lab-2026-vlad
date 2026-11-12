@@ -2,6 +2,19 @@
 
 Усі висвітлені зміни у документації та архітектурі проєкту фіксуються у цьому файлі.
 
+## [2026-11-13] [REFACTOR] Перехід презентаційного шару з Minimal API на архітектуру MVC Контролерів
+- **Презентаційний шар (`Game.Api`):**
+  - Виконано рефакторинг Presentation Layer відповідно до `docs/policy/project_policy.md` (розділ 2: *Presentation: ASP.NET Controllers*). Замінено інлайн-ендпоінти Minimal API на структуровані контролери ASP.NET Core MVC (`ControllerBase`, `[ApiController]`).
+  - Створено `HealthController` (`/api/health`) для моніторингу працездатності бекенду.
+  - Створено `AuthController` (`/api/auth`):
+    - `POST /api/auth/register` — реєстрація користувача з роллю `Player`.
+    - `POST /api/auth/login` — видача JWT-токена.
+    - `GET /api/auth/me` — захищений ендпоінт перегляду профілю із валідацією моделі власності ресурсу (OBAC).
+  - Створено `AdminController` (`/api/admin`):
+    - `GET /api/admin/users` — захищений системною RBAC-політикою `[Authorize(Policy = "AdminOnly")]` для вибірки списку користувачів.
+  - Оновлено `Program.cs`: додано `builder.Services.AddControllers()` та `app.MapControllers()`. Код запуску очищено від інлайн-маршрутизації.
+  - Збережено сумісність з `GlobalExceptionHandlingMiddleware`, налаштуваннями Swagger/OpenAPI та JWT Bearer автентифікацією.
+
 ## [2026-11-11] [FEAT] Реалізація гібридної моделі розмежування доступу (RBAC + OBAC)
 - **Доменне ядро (`Game.Domain`):**
   - Додано перелічення `UserRole` (`Player = 1`, `Admin = 2`) для типізації системних ролей користувачів.
