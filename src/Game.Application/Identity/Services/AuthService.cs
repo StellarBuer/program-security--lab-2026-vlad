@@ -15,17 +15,20 @@ public class AuthService : IAuthService
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenService _tokenService;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IBlindIndexService _blindIndexService;
 
     public AuthService(
         IUserRepository userRepository,
         IPasswordHasher passwordHasher,
         ITokenService tokenService,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService,
+        IBlindIndexService blindIndexService)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _tokenService = tokenService;
         _currentUserService = currentUserService;
+        _blindIndexService = blindIndexService;
     }
 
     public async Task<UserResponseDto> RegisterAsync(RegisterUserAC command, CancellationToken cancellationToken = default)
@@ -46,8 +49,11 @@ public class AuthService : IAuthService
             throw new UserAlreadyExistsException(normalizedEmail);
 
         var passwordHash = _passwordHasher.HashPassword(command.Password);
+        // Обчислення сліпого індексу для безпечного пошуку без дешифрування
+        var emailBlindIndex = _blindIndexService.ComputeIndex(normalizedEmail);
+
         // За замовчуванням призначається роль Player (політика безпеки: заборона самопризначення Admin)
-        var user = new UserAccount(normalizedEmail, passwordHash, UserRole.Player);
+        var user = new UserAccount(normalizedEmail, passwordHash, UserRole.Player, emailBlindIndex);
 
         await _userRepository.AddAsync(user, cancellationToken);
         await _userRepository.SaveChangesAsync(cancellationToken);

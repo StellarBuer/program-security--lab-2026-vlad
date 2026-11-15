@@ -2,6 +2,31 @@
 
 Усі висвітлені зміни у документації та архітектурі проєкту фіксуються у цьому файлі.
 
+## [2026-11-15] [FEAT] Реалізація симетричного шифрування (AES-256-GCM) та Blind Indexing (HMAC-SHA256)
+- **Доменне ядро (`Game.Domain`):**
+  - Сутність `UserAccount` розширено полем `EmailBlindIndex` та бізнес-методом `SetEmailBlindIndex` для підтримки безпечної індексації.
+- **Шар застосунку (`Game.Application`):**
+  - Створено інтерфейс порту `ISymmetricEncryptionService` (AEAD Encrypt/Decrypt на базі AES-256-GCM із 128-бітним тегом).
+  - Створено інтерфейс порту `IBlindIndexService` для детермінованого обчислення сліпих індексів без розкриття вихідного тексту.
+  - Оновлено `AuthService`: при реєстрації гравця генерується сліпий індекс `EmailBlindIndex` для забезпечення унікальності та швидкого пошуку.
+- **Шар інфраструктури (`Game.Infrastructure`):**
+  - Реалізовано адаптер `AesGcmSymmetricEncryptionService` (AES-256-GCM, унікальний 96-бітний Nonce для кожного шифрування, формат `enc:v1:{Base64}`). Забезпечено зворотну сумісність із немігрованими відкритими даними.
+  - Реалізовано адаптер `HmacBlindIndexService` (HMAC-SHA256 для $O(1)$ індексного пошуку).
+  - Оновлено `GameDbContext`: налаштовано прозорий EF Core `ValueConverter` для шифрування/розшифрування поля `UserAccount.Email` та додано індекс на `EmailBlindIndex`.
+  - Оновлено `UserRepository`: метод `GetByEmailAsync` виконує пошук через `EmailBlindIndex`.
+  - Згенеровано та застосовано міграцію EF Core `20261115204834_AddEmailBlindIndexAndEncryption`.
+- **Конфігурація та API (`Game.Api`):**
+  - Зареєстровано `ISymmetricEncryptionService` та `IBlindIndexService` у DI.
+  - `appsettings.json`: додано секцію `Security` із 256-бітними ключами для шифрування та сліпого індексування.
+
+## [2026-11-15] [DOCS] Стратегія симетричного криптографічного захисту (AES-256-GCM + Blind Indexing)
+- **Політика безпеки (`security_policy.md`):**
+  - Додано розділ 4.2 "Symmetric Cryptographic Protection Strategy": визначено об'єкти захисту (PII у стані Data at Rest, конфігураційні секрети), обґрунтовано вибір AES-256-GCM (AEAD), описано модель Envelope Encryption та життєвий цикл ротації ключів (90–180 днів, версіонування ключів, ліниве перешифрування).
+- **Модель загроз (`thread_model.md`):**
+  - Оновлено рядок D1 Game Database в STRIDE: витік дампу бази (Information Disclosure) та підробку записів (Tampering) нейтралізовано шифруванням AES-256-GCM та валідацією 128-бітного тегу автентичності.
+- **Специфікація модуля Identity (`internal_spec/Identity/business_logic.md`):**
+  - Зафіксовано шифрування `UserAccount.Email` у стані спокою та використання поля `emailBlindIndex` (HMAC-SHA256) для швидкого пошуку й контролю унікальності.
+
 ## [2026-11-13] [REFACTOR] Перехід презентаційного шару з Minimal API на архітектуру MVC Контролерів
 - **Презентаційний шар (`Game.Api`):**
   - Виконано рефакторинг Presentation Layer відповідно до `docs/policy/project_policy.md` (розділ 2: *Presentation: ASP.NET Controllers*). Замінено інлайн-ендпоінти Minimal API на структуровані контролери ASP.NET Core MVC (`ControllerBase`, `[ApiController]`).

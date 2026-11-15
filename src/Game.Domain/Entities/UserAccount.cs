@@ -6,12 +6,19 @@ namespace Game.Domain.Entities;
 public class UserAccount : ABaseEntity
 {
     public string Email { get; private set; }
+
+    /// <summary>
+    /// Сліпий індекс (Blind Index) на базі HMAC-SHA256 для точного пошуку та контролю унікальності.
+    /// Дозволяє виконувати SELECT по базі без розкриття зашифрованого поля Email.
+    /// </summary>
+    public string EmailBlindIndex { get; private set; }
+
     public string PasswordHash { get; private set; }
     public UserRole Role { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     // Конструктор для створення нового користувача
-    public UserAccount(string email, string passwordHash, UserRole role = UserRole.Player)
+    public UserAccount(string email, string passwordHash, UserRole role = UserRole.Player, string? emailBlindIndex = null)
     {
         if (string.IsNullOrWhiteSpace(email))
             throw new DomainValidationException("Email не може бути порожнім.");
@@ -22,7 +29,16 @@ public class UserAccount : ABaseEntity
         Email = email.Trim().ToLowerInvariant();
         PasswordHash = passwordHash;
         Role = role;
+        EmailBlindIndex = emailBlindIndex ?? string.Empty;
         CreatedAt = DateTime.UtcNow;
+    }
+
+    public void SetEmailBlindIndex(string blindIndex)
+    {
+        if (string.IsNullOrWhiteSpace(blindIndex))
+            throw new DomainValidationException("Blind index не може бути порожнім.");
+
+        EmailBlindIndex = blindIndex;
     }
 
     public void ChangeRole(UserRole newRole)

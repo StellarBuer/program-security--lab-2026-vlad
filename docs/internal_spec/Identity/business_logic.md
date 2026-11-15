@@ -12,7 +12,7 @@
 
 | Entity | Basic Fields | Description | Invariants |
 |---|---|---|---|
-| `UserAccount` *(Aggregate Root)* | uuid, email, passwordHash, role, createdAt | Головна сутність облікового запису гравця. | - `email` має бути унікальним у системі та мати валідний формат.<br>- `passwordHash` зберігається лише в захешованому вигляді (BCrypt).<br>- `role` визначає системні привілеї користувача (`Player`, `Admin`). За замовчуванням при реєстрації призначається `Player`. |
+| `UserAccount` *(Aggregate Root)* | uuid, email, emailBlindIndex, passwordHash, role, createdAt | Головна сутність облікового запису гравця. | - `email` має бути валідного формату та шифрується у сховищі (Data at Rest) за алгоритмом AES-256-GCM.<br>- `emailBlindIndex` зберігає детермінований HMAC-SHA256 хеш для унікальності та швидкого пошуку без розкриття email.<br>- `passwordHash` зберігається лише в захешованому вигляді (BCrypt).<br>- `role` визначає системні привілеї користувача (`Player`, `Admin`). За замовчуванням при реєстрації призначається `Player`. |
 
 ## Value Objects
 
