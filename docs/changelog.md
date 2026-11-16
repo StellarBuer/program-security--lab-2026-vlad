@@ -2,6 +2,47 @@
 
 Усі висвітлені зміни у документації та архітектурі проєкту фіксуються у цьому файлі.
 
+## [2026-11-16] [FEAT] Впровадження системи ліцензування Freeware з перевіркою цифрового підпису RSA-PSS
+- **Доменне ядро (`Game.Domain`):**
+  - Створено виняток `LicenseViolationException : AGameEngineException` (`CORE:CORE_LICENSE_VIOLATION`) для фіксації порушень ліцензійних умов або підробки підпису.
+- **Шар застосунку (`Game.Application`):**
+  - Створено інтерфейс порту `ILicenseService` та контракт моделі `LicenseData` (модель Freeware, перелік дозволених функцій, права некомерційного використання).
+- **Шар інфраструктури (`Game.Infrastructure`):**
+  - Реалізовано адаптер `RsaPssLicenseService : ILicenseService` на базі асиметричного алгоритму `RSA-PSS SHA-256` із довжиною ключа 3072 біти (`SubjectPublicKeyInfo` PEM).
+  - Згенеровано пару ключів (`private.pem`, `public.pem`) та сформовано цифровий підпис `license.sig` для еталонного файлу `license.json`.
+- **Презентаційний шар (`Game.Api`):**
+  - Створено `LicenseController` (`/api/license`) з ендпоїнтами:
+    - `GET /api/license/info` — перевірка статусу та реквізитів поточної ліцензії;
+    - `POST /api/license/verify` — верифікація довільного файлу ліцензії та його підпису;
+    - `GET /api/license/feature/{featureName}` — перевірка дозволів на окремі модулі рушія.
+  - Зареєстровано `ILicenseService` у DI-контейнері (`Program.cs`).
+  - Оновлено `GlobalExceptionHandlingMiddleware`: трансляція `LicenseViolationException` $\rightarrow$ HTTP 403 Forbidden.
+- **Тестування:**
+  - Проведено тестування валідної ліцензії (успішна верифікація) та навмисної модифікації параметрів (виявлення атаки підміни та негайна відмова в доступі).
+
+## [2026-11-16] [DOCS] Декларування моделі розповсюдження Freeware та механізмів контролю ліцензії
+- **Політика безпеки (`security_policy.md`):**
+  - Додано розділ 4.4 "Software Distribution Model and Licensing Control": зафіксовано модель Freeware, ліцензійні обмеження, криптографічний механізм RSA-PSS SHA-256 (3072 біти), ізоляцію приватного ключа та політику захисту компонентів від підміни.
+
+## [2026-11-16] [FEAT] Впровадження механізмів контролю цілісності та автентичності
+- **Доменне ядро (`Game.Domain`):**
+  - Створено виняток `DataIntegrityViolationException : AGameEngineException` (`CORE:CORE_INTEGRITY_VIOLATION`) для сигналізації про невідповідність контрольних сум або порушення автентичності даних.
+- **Шар застосунку (`Game.Application`):**
+  - Створено інтерфейс порту `IIntegrityService` (обчислення та перевірка SHA-256 для статичних конфігурацій, обчислення та перевірка HMAC-SHA256 для динамічних дій/повідомлень).
+- **Шар інфраструктури (`Game.Infrastructure`):**
+  - Реалізовано `IntegrityService : IIntegrityService` із використанням `CryptographicOperations.FixedTimeEquals` для захисту від Timing Attacks.
+  - Оновлено `AesGcmSymmetricEncryptionService`: помилка перевірки автентифікаційного тегу AES-GCM транслюється у `DataIntegrityViolationException`.
+- **Презентаційний шар (`Game.Api`):**
+  - Створено `IntegrityController` (`/api/integrity`) для валідації конфігурацій гри (SHA-256) та верифікації дій гравців (HMAC-SHA256).
+  - Зареєстровано `IIntegrityService` у DI (`Program.cs`).
+  - Оновлено `GlobalExceptionHandlingMiddleware`: додано мапінг `DataIntegrityViolationException` $\rightarrow$ HTTP 422 Unprocessable Entity.
+- **Тестування:**
+  - Проведено тестування штатної роботи та навмисної модифікації (SHA-256 Tampering, HMAC Tampering, JWT Tampering, AEAD SQLite Tampering). Усі спроби модифікації успішно виявлені та нейтралізовані системою.
+
+## [2026-11-16] [DOCS] Декларування політики контролю цілісності та автентичності
+- **Політика безпеки (`security_policy.md`):**
+  - Додано розділ 4.3 "Data Integrity and Authenticity Controls" з описом механізмів (SHA-256 для статичних асетів, HMAC-SHA256 для токенів та ігрових дій, AEAD AES-256-GCM для PII у БД), захисту від Timing Attacks (`FixedTimeEquals`) та політики Fail-Secure.
+
 ## [2026-11-15] [FEAT] Реалізація симетричного шифрування (AES-256-GCM) та Blind Indexing (HMAC-SHA256)
 - **Доменне ядро (`Game.Domain`):**
   - Сутність `UserAccount` розширено полем `EmailBlindIndex` та бізнес-методом `SetEmailBlindIndex` для підтримки безпечної індексації.

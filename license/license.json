@@ -1,0 +1,21 @@
+{
+  "licenseId": "LIC-2026-TGENGINE-00001",
+  "productId": "tactics-game-engine",
+  "productVersion": "1.0.0",
+  "owner": "Vladyslav",
+  "issuedAt": "2026-11-16",
+  "expiresAt": null,
+  "model": "Freeware",
+  "allowedFeatures": [
+    "battle-engine",
+    "character-management",
+    "identity-auth",
+    "progress-tracking"
+  ],
+  "maxDevices": null,
+  "bindToAccount": true,
+  "commercialUse": false,
+  "redistribution": false,
+  "modification": false,
+  "notes": "Free for personal, educational and non-commercial use only. No expiry. All features enabled."
+}

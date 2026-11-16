@@ -16,6 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Симетричний криптографічний захист (AES-256-GCM та HMAC-SHA256 Blind Index)
 builder.Services.AddSingleton<ISymmetricEncryptionService, AesGcmSymmetricEncryptionService>();
 builder.Services.AddSingleton<IBlindIndexService, HmacBlindIndexService>();
+builder.Services.AddSingleton<IIntegrityService, IntegrityService>();
+builder.Services.AddSingleton<ILicenseService, RsaPssLicenseService>();
 
 builder.Services.AddDbContext<GameDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));

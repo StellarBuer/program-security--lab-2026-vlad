@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using Game.Application.Common.Interfaces;
+using Game.Domain.Exceptions;
 using Microsoft.Extensions.Configuration;
 
 namespace Game.Infrastructure.Security;
@@ -102,7 +103,7 @@ public class AesGcmSymmetricEncryptionService : ISymmetricEncryptionService
         var minPayloadLength = NonceSizeInBytes + TagSizeInBytes;
         if (payload.Length < minPayloadLength)
         {
-            throw new CryptographicException("Невалідний розмір зашифрованого повідомлення: пошкоджені або неповні дані.");
+            throw new DataIntegrityViolationException("Невалідний розмір зашифрованого повідомлення: пошкоджені або неповні дані.");
         }
 
         var nonce = new byte[NonceSizeInBytes];
@@ -122,7 +123,7 @@ public class AesGcmSymmetricEncryptionService : ISymmetricEncryptionService
         }
         catch (CryptographicException ex)
         {
-            throw new CryptographicException("Помилка цілісності: автентифікаційний тег не збігається. Дані було модифіковано або використано невірний ключ.", ex);
+            throw new DataIntegrityViolationException("Помилка цілісності: автентифікаційний тег AES-GCM не збігається. Дані було модифіковано або підроблено.", ex);
         }
 
         return Encoding.UTF8.GetString(plainBytes);

@@ -47,12 +47,14 @@ public class GlobalExceptionHandlingMiddleware
 
         var statusCode = ex switch
         {
-            ForbiddenActionException => HttpStatusCode.Forbidden,        // 403
-            UserNotFoundException => HttpStatusCode.NotFound,            // 404
-            UserAlreadyExistsException => HttpStatusCode.Conflict,       // 409
-            InvalidCredentialsException => HttpStatusCode.Unauthorized,  // 401
-            WeakPasswordException => HttpStatusCode.BadRequest,          // 400
-            DomainValidationException => HttpStatusCode.BadRequest,      // 400
+            LicenseViolationException => HttpStatusCode.Forbidden,                 // 403
+            DataIntegrityViolationException => HttpStatusCode.UnprocessableEntity, // 422
+            ForbiddenActionException => HttpStatusCode.Forbidden,                 // 403
+            UserNotFoundException => HttpStatusCode.NotFound,                     // 404
+            UserAlreadyExistsException => HttpStatusCode.Conflict,                // 409
+            InvalidCredentialsException => HttpStatusCode.Unauthorized,           // 401
+            WeakPasswordException => HttpStatusCode.BadRequest,                   // 400
+            DomainValidationException => HttpStatusCode.BadRequest,               // 400
             _ => HttpStatusCode.BadRequest
         };
 
